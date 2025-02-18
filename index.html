@@ -75,6 +75,21 @@
           종목 관계
         </button>
       </li>
+      <!-- 4번째 탭: 실시간 미국 주식 -->
+      <li class="nav-item" role="presentation">
+        <button
+          class="nav-link"
+          id="tab-live"
+          data-bs-toggle="tab"
+          data-bs-target="#live"
+          type="button"
+          role="tab"
+          aria-controls="live"
+          aria-selected="false"
+        >
+          실시간 미국 주식
+        </button>
+      </li>
     </ul>
 
     <!-- 탭 컨텐츠 -->
@@ -210,6 +225,37 @@
                 <div id="relationsGraph" style="height: 400px;">
                   <p>여기에 종목 간 관계를 나타내는 그래프가 표시됩니다.</p>
                 </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 실시간 미국 주식 탭 -->
+      <div
+        class="tab-pane fade"
+        id="live"
+        role="tabpanel"
+        aria-labelledby="tab-live"
+      >
+        <div class="row mt-4">
+          <div class="col-12">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">실시간 미국 주식</h5>
+                <table class="table table-striped">
+                  <thead>
+                    <tr>
+                      <th>종목명</th>
+                      <th>현재가</th>
+                      <th>전일 종가</th>
+                      <th>변화율</th>
+                    </tr>
+                  </thead>
+                  <tbody id="liveStockTableBody">
+                    <!-- 실시간 데이터가 여기에 표시됩니다 -->
+                  </tbody>
+                </table>
               </div>
             </div>
           </div>
