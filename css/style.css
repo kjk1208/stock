@@ -1,0 +1,28 @@
+/* style.css */
+
+/* 기본 배경 및 여백 설정 */
+body {
+    background-color: #f8f9fa;
+  }
+  
+  /* 네비게이션 바 하단 여백 */
+  .navbar {
+    margin-bottom: 20px;
+  }
+  
+  /* 카드 간의 간격 */
+  .card {
+    margin-bottom: 20px;
+  }
+  
+  /* 탭 메뉴 스타일 */
+  .nav-tabs .nav-link {
+    color: #0d6efd;
+    font-weight: bold;
+  }
+  
+  .nav-tabs .nav-link.active {
+    background-color: #0d6efd;
+    color: #fff;
+    border-color: #0d6efd;
+  }
