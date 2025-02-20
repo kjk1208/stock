@@ -26,11 +26,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
   /* -----------------------------
      2. FullCalendar 초기화 (Google Calendar 연동)
-     기존 코드 대신 Google Calendar API 연동 설정 추가
   ----------------------------- */
   const calendarEl = document.getElementById('calendarContainer');
+  let calendar;
   if (calendarEl) {
-    var calendar = new FullCalendar.Calendar(calendarEl, {
+    calendar = new FullCalendar.Calendar(calendarEl, {
       initialView: 'dayGridMonth',
       headerToolbar: {
         left: 'prev,next today',
@@ -44,6 +44,12 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     calendar.render();
   }
+  // 탭 활성화 시 재렌더링
+  document.querySelector('#tab-calendar').addEventListener('shown.bs.tab', function() {
+    if (calendar) {
+      calendar.render();
+    }
+  });
 
   /* -----------------------------
      3. 실시간 미국 주식 데이터 (기존 코드 그대로 유지)
@@ -91,20 +97,33 @@ document.addEventListener('DOMContentLoaded', function() {
     { symbol: 'Amazon (AMZN)', quantity: 5, buyPrice: 3000, currentPrice: null, profitRate: null }
   ];
 
-  // 드롭다운(select) 생성 함수 (옵션 추가)
+  // 드롭다운(select) 생성 함수 (Bootstrap-Select 적용)
   function createSymbolSelect(initialValue = '') {
     const select = document.createElement('select');
-    select.classList.add('form-control');
+    select.classList.add('form-control', 'selectpicker');
+    // selectpicker 옵션: liveSearch 활성화
+    select.setAttribute('data-live-search', 'true');
     const defaultOption = document.createElement('option');
     defaultOption.value = '';
     defaultOption.textContent = '종목명 선택';
     select.appendChild(defaultOption);
     const options = [
-      { value: 'AAPL', text: 'Apple (AAPL)' },
-      { value: 'AMZN', text: 'Amazon (AMZN)' },
-      { value: 'GOOGL', text: 'Google (GOOGL)' },
-      { value: 'MSFT', text: 'Microsoft (MSFT)' },
-      { value: 'TSLA', text: 'Tesla (TSLA)' }
+      { value: 'NVDA', text: 'Nvidia' },
+      { value: 'NVDL', text: 'Nvidia 2x Long' },
+      { value: 'BBAI', text: 'BigBear AI' },
+      { value: 'RGTI', text: 'Rigetti' },
+      { value: 'QBTS', text: 'D-wave' },
+      { value: 'SES', text: 'SES AI' },
+      { value: 'LAES', text: 'Seal SQ' },
+      { value: 'IONQ', text: 'IonQ' },
+      { value: 'ORCL', text: 'Oracle' },
+      { value: 'ARM', text: 'Arm' },
+      { value: 'PDYN', text: 'Palladyne' },
+      { value: 'AAPL', text: 'Apple' },
+      { value: 'AMZN', text: 'Amazon' },
+      { value: 'GOOGL', text: 'Google' },
+      { value: 'MSFT', text: 'Microsoft' },
+      { value: 'TSLA', text: 'Tesla' }
     ];
     options.forEach(opt => {
       const option = document.createElement('option');
@@ -155,6 +174,8 @@ document.addEventListener('DOMContentLoaded', function() {
       stockTbody.appendChild(tr);
     });
     localStorage.setItem('stocks', JSON.stringify(stocks));
+    // reinitialize selectpicker after rendering new select elements
+    $('.selectpicker').selectpicker('refresh');
   }
   renderStocks();
 
@@ -165,7 +186,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
-  // 추가 버튼: 입력 폼 행 추가 (종목명 입력을 드롭다운으로 변경)
+  // 추가 버튼: 입력 폼 행 추가 (드롭다운 사용)
   addStockBtn.addEventListener('click', function() {
     const tr = document.createElement('tr');
 
@@ -227,6 +248,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     tr.append(noTd, checkboxTd, symbolTd, quantityTd, buyPriceTd, currentTd, profitTd, actionTd);
     stockTbody.appendChild(tr);
+    $('.selectpicker').selectpicker('refresh');
   });
 
   // 삭제 버튼: 선택된 행 삭제
@@ -314,6 +336,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     tr.append(noTd, checkboxTd, symbolTd, quantityTd, buyPriceTd, currentTd, profitTd, actionTd);
     stockTbody.insertBefore(tr, stockTbody.children[editIndex]);
+    $('.selectpicker').selectpicker('refresh');
   });
 
   /* -----------------------------
