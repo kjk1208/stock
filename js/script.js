@@ -1,4 +1,31 @@
 document.addEventListener('DOMContentLoaded', function() {
+  /* --- 0. 비밀번호 인증 처리 --- */
+  // 비밀번호 인증 전 메인 콘텐츠 숨김은 index.html에서 mainContent에 inline style로 처리됨.
+  const loginModalEl = document.getElementById('loginModal');
+  const loginModal = new bootstrap.Modal(loginModalEl);
+  // 로그인 모달을 표시
+  loginModal.show();
+
+  // 엔터 키를 누르면 로그인 버튼 클릭 이벤트를 트리거
+  document.getElementById('passwordInput').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') { // 또는 e.keyCode === 13
+      document.getElementById('loginBtn').click();
+    }
+  });
+
+  document.getElementById('loginBtn').addEventListener('click', function() {
+    const passwordInput = document.getElementById('passwordInput').value;
+    if (passwordInput === PASSWORD) {
+      // 비밀번호가 일치하면 모달 숨기고 메인 콘텐츠 보이기
+      loginModal.hide();
+      document.getElementById('mainContent').style.display = 'block';
+    } else {
+      document.getElementById('loginError').style.display = 'block';
+    }    
+  });
+  
+  
+
   /* -----------------------------
      1. 포트폴리오 차트 초기화
   ----------------------------- */
@@ -101,7 +128,6 @@ document.addEventListener('DOMContentLoaded', function() {
   function createSymbolSelect(initialValue = '') {
     const select = document.createElement('select');
     select.classList.add('form-control', 'selectpicker');
-    // selectpicker 옵션: liveSearch 활성화
     select.setAttribute('data-live-search', 'true');
     const defaultOption = document.createElement('option');
     defaultOption.value = '';
@@ -174,7 +200,6 @@ document.addEventListener('DOMContentLoaded', function() {
       stockTbody.appendChild(tr);
     });
     localStorage.setItem('stocks', JSON.stringify(stocks));
-    // reinitialize selectpicker after rendering new select elements
     $('.selectpicker').selectpicker('refresh');
   }
   renderStocks();
@@ -344,7 +369,6 @@ document.addEventListener('DOMContentLoaded', function() {
   ----------------------------- */
   async function updateOwnedStockPrices() {
     for (let i = 0; i < stocks.length; i++) {
-      // 'Apple (AAPL)' -> 'AAPL'
       const symbol = stocks[i].symbol.split('(')[1]?.replace(')', '') || stocks[i].symbol;
       try {
         const response = await fetch(`https://finnhub.io/api/v1/quote?symbol=${symbol}&token=${API_TOKEN}`);
@@ -369,5 +393,5 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     localStorage.setItem('stocks', JSON.stringify(stocks));
   }
-  setInterval(updateOwnedStockPrices, 1000);
+  setInterval(updateOwnedStockPrices, 30000);
 });
