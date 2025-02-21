@@ -16,6 +16,7 @@ document.addEventListener('DOMContentLoaded', function() {
   document.getElementById('loginBtn').addEventListener('click', function() {
     const passwordInput = document.getElementById('passwordInput').value;
     loginModal.hide();
+    document.getElementById('mainContent').style.display = 'block';
     // if (passwordInput === PASSWORD) {
     //   // 비밀번호가 일치하면 모달 숨기고 메인 콘텐츠 보이기
     //   loginModal.hide();
