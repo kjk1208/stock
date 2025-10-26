@@ -1,0 +1,8 @@
+# Ignore backend environment files and local artifacts
+backend/.env
+backend/.venv/
+backend/alpaca.db
+
+# Python cache
+__pycache__/
+*.pyc
